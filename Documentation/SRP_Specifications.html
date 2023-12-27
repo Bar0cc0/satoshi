@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title> SRP Specifications</title>
+        <link rel="icon" type="image/x-icon" href=".\media\logo-s.png">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <style>
+            * {box-sizing: border-box;}
+            .sidenav {
+                overflow: hidden;
+                height: 100%; 
+                width: 14vw; 
+                position: fixed; 
+                z-index: 1;
+                top: 0; 
+                left: 0;
+                background-color: rgb(50, 50, 50); 
+                overflow-x: hidden; 
+                transition: 0.1s;
+            }
+            .sidenav a {
+                margin: 1vw 2vw 0vw 1vw;
+                text-decoration: none;
+                display: block;
+            }
+            .sidenav .center {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                padding-top: 1vw;
+                padding-bottom: 1vw;
+                width: 80%;
+                height: 12%;
+            }
+            .sidenav .logo-container {
+               float: none;
+               display: inline-block;
+               width: auto;
+               background-color: rgb(16, 168, 37);
+               padding-top: 1.5vw;
+               padding-bottom: 2.25vw;
+            }
+            .search-container {
+               float: none;
+               display: inline-block;
+               width: auto;
+               background-color: rgb(50, 50, 50);
+               padding-top: 1vw;
+            }
+            .search-container input[type=text] {
+                margin-left: 1vw;
+                margin-right: auto;
+                width: 11.75vw;
+                border-radius: 10px;
+                border-width: 1px;
+                border-color: rgb(5, 151, 5);
+                background-color:rgb(50, 50, 50);
+                color:white;
+                padding: 2px 5px 2px 5px;
+            }
+
+            .subnav {
+                display: none;
+                margin-left: 1vw;
+            }
+            .subnav a {
+                font-size: 1vw;
+                color: white;
+                text-decoration: none;
+                display: block;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position:absolute;
+                margin-top: .5vw;
+                margin-left: 1vw;
+                background-color: rgb(50, 50, 50);
+                color: rgb(16, 168, 37);;
+                min-width: 10vw;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+            .dropdown-content a {
+                color: rgb(16, 168, 37);
+                text-decoration: none;
+                display: block;
+            }
+
+            body {
+                background-color: white;
+                color: rgb(50, 50, 50);
+            }
+            .header {
+                object-position: top;
+                font-size: 1vw;
+            }
+            h1 {
+                border-bottom-style: solid;
+                padding-top: 1.25vw;
+                padding-bottom: 2vw;
+            }
+            h2 {
+                border-bottom-style: groove;
+                border-width: 2px;
+                padding-top: 2vw;
+                font-size:2vw;
+            }
+            h3 {
+                padding-top: 1.5vw;
+                font-size:1.5vw;
+            }
+            h4 {
+                padding-top: 0.5vw;
+                font-size:1vw;
+            }
+            p, ol, .img, table, th, td {
+                margin-left: 1vw;
+            }
+            table, th, td {
+                border: 1px dotted rgb(50, 50, 50);
+                border-collapse: collapse;
+                width: 80vw;
+                padding-left: 1vw;
+                vertical-align: top;
+            }
+            th {
+                font-size: small;
+                color: rgb(16, 168, 37);
+                background-color: rgb(50, 50, 50);
+                width: 50%;
+            }
+            td {
+                font-size: 1vw;
+                margin-bottom: 10px;
+            }
+            #main {
+                margin-top:15px;
+                margin-left: 16vw; 
+                margin-bottom: 2vw;
+                font-size:1vw;
+                transition: .1s;
+            }
+            .title {
+                font-family: Roboto;
+                font-size:4vw;
+            }
+            code {
+                font-size: 80%;
+            }
+            .img {
+                border-radius: 5px;
+                cursor: pointer;
+                transition: 0.3s;
+                width: 15%;
+            }
+            .img:hover {
+                opacity: 0.7;
+            }
+            .modal {
+                display: none; 
+                position: fixed; 
+                z-index: 1; 
+                padding-top: 5vw; 
+                left: 0;
+                top: 0;
+                width: 100%; 
+                height: 100%; 
+                overflow: auto;
+                background-color: rgb(50, 50, 50);
+            }
+            .modal-content {
+                margin: auto;
+                display: block;
+                width: 80vw;
+                animation-name: zoom;
+                animation-duration: 0.6s;
+                opacity: 1;
+            }
+            .flex-container {
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            .flex-container > div {
+                width: 100px;
+                text-align: center;
+   
+                font-size: 10px;
+            }
+            a {
+                text-decoration: underline;
+            }
+            @keyframes zoom {
+                from {transform:scale(0)}
+                to {transform:scale(1)}
+            }
+            @media screen and (max-width: 600px) {
+                .sidenav .search-container, .subnav {
+                    float: none;
+                }
+                .sidenav a, .sidenav .logo-container, .sidenav input[type=text], .sidenav .search-container button {
+                    float: none;
+                    display: block;
+                    text-align: left;
+                    width: 6vw;
+                    margin: 1vw;
+                    padding: 0.2vw;
+                    font-size: 1vw;
+                }
+                .subnav a {
+                    float: none;
+                    display: block;
+                    text-align: left;
+                    width: 6vw;
+                    margin: 1vw;
+                    padding: 0.2vw;
+                    font-size: 1vw;
+                }
+                .sidenav input[type=text] {
+                    border: 1px solid #ccc;  
+                }
+            }
+        </style>
+        <script>
+            function toggle(elmtid) {
+                var x = document.getElementById(elmtid);
+                if (x.style.display === "block") {
+                    x.style.display = "none";
+                } else {
+                    x.style.display = "block";
+                }
+            };
+            function showSearch() {
+                let input = document.getElementById("searchbox");
+                let txt = document.getElementById("main");
+                let container = document.getElementById("dd-container");
+                let s = new Array();
+                for (var c=0; c<container.childElementCount; c++) {
+                    container.removeChild(container.children[c]);
+                }; 
+                container.textContent='';
+
+                if (input.value != "") {
+                    for (var i=0; i<txt.childElementCount; i++) {
+                        let res = txt.children[i].textContent;
+                        if (res.toLowerCase().match(input.value.toLowerCase())) {
+                            s.push(txt.children[i].id);
+                            let new_ul = container.appendChild(document.createElement("a"))
+                            let item = s.pop();
+                            new_ul.href = `#${item}`;
+                            new_ul.innerText = item;
+                        };
+                    };
+                console.log(s, container.textContent);
+                container.style.display = "block";
+                };
+            }
+            function hideSearch(){
+                document.getElementById("dd-container").style.display="none"; 
+                document.getElementById("searchbox").value="";
+            };
+            function dateNow(elmtid){
+                let d = document.lastModified;
+                document.getElementById("header").textContent=`Last modified: ${d}`;
+            };
+            function openModal(modal_id, img_id, modal_content_id){
+                var modal = document.getElementById(modal_id);
+                var img = document.getElementById(img_id);
+                var modalImg = document.getElementById(modal_content_id);
+                img.onclick = function(){
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                };
+                modal.onclick = function() { 
+                    modal.style.display = "none";
+                };
+            };
+
+        </script>
+    </head>
+    <body>
+        <div id="sidenav-container" class="sidenav">
+            <div class="logo-container">
+                <img src=".\media\logo-satoshi_white.png" class="center">
+            </div>
+            <div class="search-container">
+                <div class="dropdown">
+                    <input id="searchbox" type="text" placeholder="Search..."  onchange="showSearch()">
+                    <div id="dd-container" class="dropdown-content"  onclick="hideSearch()">
+                    </div>
+                  </div>
+            </div>
+            <div id="subnav-container">
+                <a href="javascript:void(0);" class="icon" onclick="toggle('GS')" style="font-size: 1.5vw; color: rgb(39, 169, 50);">Getting started</a>
+                <div id="GS" class="subnav">
+                    <a href="#GS_overview">Control & data flows</a>
+                    <a href="#GS_gui">Dashboard GUI</a>
+                    <a href="#GS_workspace">Google Workspace integration</a>
+                </div>
+                <a href="javascript:void(0);" class="icon" onclick="toggle('RG')" style="font-size: 1.5vw; color: rgb(39, 169, 50);">Reference guide</a>
+                <div id="RG" class="subnav">
+                    <a href="#RG_gdrive">Automation directory</a>
+                    <a href="#RG_rdbms">SQL Database</a>
+                    <a href="#RG_setup">Setup & configuration</a>
+                    <a href="#RG_security">Access control & user management</a>
+                    <a href="#RG_scripting">Template scripting</a>
+                    <a href="#RG_clio">Clio integration</a>
+                </div>
+                <a href="javascript:void(0);" class="icon" onclick="toggle('API')" style="font-size: 1.5vw; color: rgb(39, 169, 50);">API routines</a>
+                <div id="API" class="subnav">
+                    <a href="#API_events">Event listeners</a>
+                    <a href="#API_rdbms">Relational database management</a>
+                    <a href="#API_files">Files management</a>
+                    <a href="#API_tmp">Templates processing</a>
+                    <a href="#API_smtp">SMTP services</a>
+                    <a href="#API_pdf">PDF encryption</a>
+                    <a href="#API_test">Integration testing</a>
+                    <a href="#API_setup">Setup</a>
+                    <a href="#API_pos">Part-of-speech tagger (add-on)</a>
+                </div>
+                <a href="#SP" class="icon" style="font-size: 1.5vw; color: rgb(39, 169, 50);">Support</a>
+            </div>   
+        </div>
+    
+        
+        <div id="main" class="main" onclick="hideSearch()">
+            <h1><div id="header" class="header"><script type="text/javascript">dateNow("header")</script></div></h1>
+            <h1><span class='title'>Requests Processor Specifications</span></h1>  
+
+            
+            <h2 id="GS"><b>1. Getting started</b></h2>  
+                <h3 id="GS_overview">1.1. Control & data flows</h3>
+                    <img id="GS_overview_UML" src=".\media\SL_ActivityDiagram_UML.png" class="img" onclick="openModal('GS_modal','GS_overview_UML','imgUML')">
+                    <div id="GS_modal" class="modal"><img class="modal-content" id="imgUML"></div>
+                    
+                    <h4 style="padding-top: 1.25vw;padding-left: 1vw;">Step-by-step process:</h4>
+                    <ol style="padding-top: 0.25vw;">
+                        <li>From the website, a customer submits a request via the dedicated contact form.
+                            <ul>
+                                <li>An email with appropriate headers (i.e., request type, customer name, etc.) is sent to requests@satoshi.legal</li>
+                            </ul>
+                        </li>
+                        <li style="padding-top: 0.5vw;">The email thread is automatically processed.
+                            <ul>
+                                <li>New entries are created in both the 'Requests' and 'Accounts' tables.</li>
+                                <li>Request status is set to 'received'.</li>
+                            </ul>
+                        </li>
+                        <li style="padding-top: 0.5vw;">Depending on the request type: 
+                            <ul>
+                                <li>If data collection is required, a pdf form is generated and sent to customer by email; request status remains set to 'received'</li>
+                                <li>However, if no data collection is required to move forward with the request, its status is changed to 'pending'.</li>
+                            </ul>
+                        </li>
+                        <li style="padding-top: 0.5vw;">Upon retrieval of the data collection form submitted by the customer: 
+                            <ul>
+                                <li>Data is extracted from the encrypted email and stored in the 'Accounts' table</li>
+                                <li>A new project entry is added, a new directory is created in the automation directory and appropriate documentation is generated.</li>
+                                <li>Request status is set to 'pending'.</li>
+                            </ul>
+                        </li>
+                        <li style="padding-top: 0.5vw;">Whenever a request status is set to 'pending':
+                            <ul>
+                                <li>An SMS notification is sent to authorized users</li>
+                                <li>Users must review and approve both the request and the documentation via the Dashboard GUI.</li>
+                                <li>Once status is changed to 'approved': 
+                                    <ul> 
+                                        <li>entry is added to the 'billing' table</li>
+                                        <li>request entry is removed from the 'requests' table</li>
+                                        <li>directory is copied into the Clio's folder</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                <h3 id="GS_gui">1.2. Dashboard GUI</h3>
+
+                <h3 id="GS_workspace">1.3. Google Workspace integration</h3>
+            
+            <h2 id="RG"><b>2. Reference guide</b></h2>  
+                <h3 id="RG_gdrive">2.1. Automation directory</h3>
+                    <div class="row" style="width: 80%;">
+                        <img id="RG_gd1" src=".\media\gdrive_mydrive.png" class="img d-block" onclick="openModal('RG_modal_gd1','RG_gd1','img_gd1')">
+                        <div id="RG_modal_gd1" class="modal"><img class="modal-content" id="img_gd1"></div>
+                        <img id="RG_gd2" src=".\media\gdrive_satoshiSR.png" class="img d-block" onclick="openModal('RG_modal_gd2','RG_gd2','img_gd2')">
+                        <div id="RG_modal_gd2" class="modal"><img class="modal-content" id="img_gd2"></div>
+                    </div>
+                <h3 id="RG_rdbms">2.2. SQL Database</h3>
+                    <h4>2.2.1. Entity relationships diagram</h4>
+                        <img id="RG_rdbms_ERD" src=".\media\SL_Database_ERD.png" class="img" onclick="openModal('RG_modal','RG_rdbms_ERD','imgERD')">
+                        <div id="RG_modal" class="modal"><img class="modal-content" id="imgERD"></div>
+                    <h4>2.2.2. Schema regeneration</h4>
+                        <p>Every time new variables are added or removed from a form, changes must be propagated from the database entities (i.e., columns) to the views.
+                            This operation is called schema regeneration. It can be easily be achieved in Appsheet:</p>
+                            <ol>
+                                <li>Fill in and submit your new form. During automated processing, new variables are added to the 'accounts_table'.<br>
+                                NB: You can also add columns manually to the corresponding spreadsheet of DATA_SCHEMA_N3.</li>
+                                <li>Once the table has been updated, open the <a href="https://www.appsheet.com/template/AppDef?appName=DATA_SCHEMA_N3-756813475&appId=e5521abf-6d38-4f90-91d0-8536fcd0b67f&quickStart=False#Data.Columns.Accounts"> Appsheet console <i class="fa fa-external-link"></i></a>. <br>
+                                    Under the tab <code>Data</code>, select the 'Accounts' table and click  <code>Regenerate schema</code> on the upper right menu.</li>
+                            </ol>
+                <h3 id="RG_setup">2.3. Setup & configuration</h3>
+                    <h4>2.3.1 Config.json</h4>
+                    <table>
+                        <tr> <th style="width: 15%;">Field</th> <th style="width: 40%;">Parameters</th> <th style="width: 40%;">Description</th> </tr>
+                        <tr> <td> <code>requestType</code></td> <td>key requestID: str(int)<br>value requestName: str</td> <td>Declare available services.</td> </tr>
+                        <tr> <td> <code>flatRateBaseAmount</code></td> <td>key requestID: str(int)<br>value amount: int</td> <td>Declare cost per service.</td> </tr>
+                        <tr> <td> <code>templates</code></td> <td>key templateType: str<br>value list(str) || map(requestID:str(int), list(str))</td> <td>Declare templates by type.</td> </tr>
+                        <tr> <td> <code>userGroups</code></td> <td>key enum[role/owner, role/editor, role/viewer]: str<br>value map(id:email@satoshi.legal, permissions:enum(OAuth scope)): str</td> <td>Declare user groups.</td> </tr>
+                        <tr> <td> <code>eventListenerDeltaTime</code></td> <td>value: int</td> <td>Declare time-based eventListeners frequency property.</td></tr>
+                    </table>
+                    <h4>2.3.2. Other parameters</h4>
+                    <p>Google Drive >> share clio folder to enable integration > access_type[limited, 'Satoshi Legal']<br>
+                       Appscripts::config >> add admin_email@smtp to receive execution reports<br>
+                    </p>
+                <h3 id="RG_security">2.4. Access control & user management</h3>
+                    <p>SSO / security / API keys<br>
+                        Google OAuth2.0 >> Cloud console > IAM_&_Admin > IAM > grant_access[{role:[owner, viewer]}]<br>
+                        AppSheet >> security > require_sign-in >> {authentication_provider:Google, manage_users:[emails, app_url]}<br>
+                        Appscripts::settings >> GCP key > enables advanced services (e.g. add-on), OAuth consent screen & script execution<br>
+                    </p>
+                <h3 id="RG_scripting">2.5. Template scripting</h3>
+                    <h4>2.5.1. Syntax</h4>
+                    <table>
+                        <tr> <th style="width: 30%;">Statement syntax</th> <th style="width: 70%;">Output</th> </tr>
+                        <tr> <td><code> &lt;&lt; if {{VAR}} &gt;&gt; </code></td> <td>If (VAR==TRUE), corresponding "TXT_1" lookup table entry is returned. Else, statement is removed at runtime.</td> </tr>
+                        <tr> <td><code> &lt;&lt; elif {{VAR}} &gt;&gt; </code></td> <td>If (VAR==TRUE), corresponding "TXT_1" is returned. If FALSE, "TXT_0" is returned.</td></tr>
+                        <tr> <td><code> &lt;&lt; if {{VAR}} : replacement_text &gt;&gt; </code></td> <td>If (VAR==TRUE), replacement_text overloads the lookup table entry. Else, statement is removed at runtime.</td> </tr>
+                        <tr> <td><code> &lt;&lt; if {{VAR_A}} && {{VAR_B}} : replacement_text &gt;&gt; </code></td> <td>If (VAR_A==TRUE AND VAR_B==TRUE) returns replacement_text. Else, statement is removed at runtime.</td> </tr>
+                        <tr> <td><code> &lt;&lt; if {{VAR_A}} &! {{VAR_B}} : replacement_text &gt;&gt; </code></td> <td>If (VAR_A==TRUE AND VAR_B==FALSE) returns replacement_text. Else, statement is removed at runtime.</td> </tr>
+                        <tr> <td><code> &lt;&lt; for {{VAR}} &gt;&gt; </code></td> <td>Iterates over all indices of the specified variable and returns a list object.</td> </tr>
+                    </table>
+                    <h4>2.5.2. Lookup table</h4>
+                    <h4>2.5.3. GoogleDocs add-on (Part-of-speech tagger)</h4>
+                    <p>Install and use this debugger add-on to proof your templates and process the generated documents.</p>
+                    <img id="RG_addon" src=".\media\googleDocs_addon.png" style="align-items: center;" class="img" onclick="openModal('RG_modal_ao','RG_addon','img_addon')">
+                        <div id="RG_modal_ao" class="modal"><img class="modal-content" id="img_addon"></div>
+                    
+                <h3 id="RG_clio">2.6. Clio integration</h3>
+                    <div class="row" style="width: 80%;">
+                        <img id="RG_ip" src=".\media\clio_imports_path.png" class="img d-block" onclick="openModal('RG_modal_ip','RG_ip','img_ip')">
+                        <div id="RG_modal_ip" class="modal"><img class="modal-content" id="img_ip"></div>
+                        <img id="RG_if" src=".\media\clio_imports_files.png" class="img d-block" onclick="openModal('RG_modal_if','RG_if','img_if')">
+                        <div id="RG_modal_if" class="modal"><img class="modal-content" id="img_if"></div>
+                        <img id="RG_s" src=".\media\clio_settings_gdrive.png" class="img d-block" onclick="openModal('RG_modal_s','RG_s','img_s')">
+                        <div id="RG_modal_s" class="modal"><img class="modal-content" id="img_s"></div>
+                        <img id="RG_c" src=".\media\clio_contacts.png" class="img d-block" onclick="openModal('RG_modal_c','RG_c','img_c')">
+                        <div id="RG_modal_c" class="modal"><img class="modal-content" id="img_c"></div>
+                        <img id="RG_m" src=".\media\clio_matters.png" class="img d-block" onclick="openModal('RG_modal_m','RG_m','img_m')">
+                        <div id="RG_modal_m" class="modal"><img class="modal-content" id="img_m"></div>
+                        <img id="RG_d" src=".\media\clio_documents.png" class="img d-block" onclick="openModal('RG_modal_d','RG_d','img_d')">
+                        <div id="RG_modal_d" class="modal"><img class="modal-content" id="img_d"></div>
+                    </div>
+                    <div style="padding-top:1vw;">
+                        <h4 style="padding-top: 1.25vw;padding-left: 1vw;">Step-by-step process:</h4>
+                        <ol style="padding-top: 0.25vw;">
+                            <li>Go to Clio's <a href="https://ca.app.clio.com/nc#/settings?path=imports">Regional Import Portal <i class="fa fa-external-link"></i></a></li>
+                            <li style="padding-top: 0.5vw;">Click <code>Add</code> on the upper right menu. Select <code>Contacts from Outlook CSV</code>.<br>
+                                Browse your linked GDrive/Clio folder to find the relevant contacts.csv file.</li>
+                            <li style="padding-top: 0.5vw;">Click <code>Add</code> on the upper right menu. Select <code>Matters from CSV</code>.<br>
+                                Browse your linked GDrive/Clio folder to find the relevant contacts.csv file.</li>
+                        </ol>
+
+                    </div>
+                    
+            
+            <h2 id="API">3. API routines</h2>
+            <div id="API_events_container">
+                <h3 id="API_events">3.1. Event listeners</h3>
+                <table>
+                    <tr><th>Method</th> <th>Description</th> </tr>
+                    <tr><td>smtp_handler :: eventListener(obj:event) -> bool</td> 
+                        <td>Gmail service threads time-triggered.<br>
+                            Email's subject must contain a specific tag (either 'request_type_&lt;int&gt;' or 'form_') for filtering purpose.
+                            Once processed, the email is moved to trash.<br>
+                            Returns TRUE if the function exited successfully, FALSE if an error has occured.</td> 
+                    </tr>
+                    <tr><td>dbms_utils :: eventListener(obj:event) -> bool</td> 
+                        <td>Tables onChange() triggered.<br>
+                            Creates a unique (requestID, accountID) and inserts a new record into the requests_table.<br>
+                            Returns TRUE if the funtion exited succesfully, FALSE if an error has occured.</td> 
+                    </tr>
+                </table>
+            </div>
+            <div id="API_rdbms_container"> 
+                <h3 id="API_rdbms">3.2. Relational database management</h3>
+                <table>
+                    <tr> <th>Method</th> <th>Description</th> </tr>
+                    <tr> <td>dbms_utils :: insertNewRequestInTable(array(map(str)):queuedRequests) -> bool</td> 
+                         <td>Inserts a new record in the table.<br>
+                         If request is of type >0, triggers [createForm(), sendEmail()].<br>
+                         Returns TRUE if the function exited succesfully, FALSE if an error has occured.</td> 
+                    </tr>
+                    <tr> <td>dbms_utils :: insertNewProjectInTable(str:accountID) -> bool</td> 
+                         <td>Creates a new project record and triggers [createNewProjectFolder(), createDOC()].<br>
+                         Deletes originating request record in the requests_table.<br>
+                         Returns TRUE if the function exited succesfully, FALSE if an error has occured.</td> 
+                    </tr>
+                    <tr> <td>dbms_utils :: updateAccountsTable(map(str):dataCollectedFromForm) -> bool</td> 
+                         <td>Adds data collected from submited PDF form.<br>
+                         Returns TRUE if the function existed successfully, FALSE if an error has occured.</td> 
+                    </tr>
+                    <tr> <td>dbms_utils :: updateAnalyticsTable(int:requestType, datetime:lastModified) -> bool</td> 
+                         <td>Adds a new record storing response time as per request type.<br>
+                         Returns TRUE if the function exited successfully, FALSE if an error has occured.</td> 
+                    </tr>
+                    <tr> <td>dbms_utils :: iterateOverTableRowsByColumn(str:tableName, int:colIndex, str:value) -> (int:rowIndex)</td> 
+                         <td>Helper function to iterate over table rows for a fixed column.<br>
+                         Returns the index of the first record matching 'value', NULL if no match was found.</td>
+                    </tr>
+                    <tr> <td>dbms_utils :: iterateOverTableColumnsByRow(str:tableName, int:rowIndex, *str:*value) -> (int:colIndex || array(str))</td>
+                         <td>Helper function to iterate over table columns for a fixed row.<br>
+                         If no value is passed, returns a list of the table's headers; if a value is passed, the matching col index is return, NULL otherwise.</td>
+                    </tr>
+                    <tr> <td>dbms_utils :: createID() -> (str:newID)</td>
+                         <td> Helper function to generate 32-bit unique identifiers.</td> 
+                    </tr>
+                </table>
+            </div>
+            <div id="API_files_container"> 
+                <h3 id="API_files">3.3. Files management</h3>
+                <table>
+                    <tr> <th>Method</th> <th>Description</th> </tr>
+                    <tr> <td>filesystem_utils :: createNewProjectFolder(str:projectID) -> (str:projectFolderID)</td>
+                         <td>Creates a Google Drive folder for a project.</td> 
+                    </tr>
+                    <tr> <td>filesystem_utils :: exportClio(str:accountID, str:projectFolderID) -> None</td>
+                         <td> Creates a copy of the project's folder and move it to the Clio folder.<br></td> 
+                    </tr>
+                    <tr> <td>filesystem_utils :: getFile_(str:fileName, obj:folder) -> (obj:file || bool)</td>
+                         <td>Fetches a file by name in the specified folder.<br>
+                         Returns TRUE if file was not found, FALSE if an error has occured.</td> 
+                    </tr>
+                    <tr> <td>filesystem_utils :: getSpreadsheet_(str:spreadsheetName, obj:folder) -> (obj:spreadsheet || bool)</td>
+                         <td>Fetches a spreadsheet by name in the specified folder.<br>
+                         Returns TRUE if spreadsheet was not found, FALSE if an error has occured.</td> 
+                    </tr>
+                    <tr> <td>filesystem_utils :: getFolder_(str:folderName) -> (obj:folder || bool)</td>
+                         <td>Fetches folder by name.<br>
+                         Returns TRUE if folder was not found, FALSE if an error has occured.</td> 
+                    </tr>
+                </table>
+            </div>          
+            <div id="API_tmp_container"> 
+                <h3 id="API_tmp">3.4. Templates processing</h3>
+                <table>
+                    <tr> <th>Method</th> <th>Description</th> </tr>
+                    <tr> <td>templates_handler :: createForm(str:accountID) -> array(str:usermail, str:subject, str:emailBody, obj:formPDF)</td>
+                         <td>Creates new form from template, name &lt;accountID&gt;.pdf<br>
+                         Triggers sendEmail(...,*file:pdfFile).</td> 
+                    </tr>
+                    <tr> <td>templates_handler :: createDoc(str:projectID, str:projectFolderID) -> None</td>
+                         <td>Filename format: &lt;dateISO_Y/M/D&gt;_&lt;client_name&gt;_&lt;docType_name&gt;.gdoc</td> 
+                   </tr>
+                    <tr> <td><strong>DEPRECATED:</strong> templates_handler :: createInvoice(str:projectID, str:projectFolderID)</td>
+                         <td></td> 
+                   </tr>
+                    <tr> <td>templates_handler :: createEmailBody(str:requestID) -> (innerHTML:emailBody)</td>
+                         <td></td> 
+                   </tr>
+                </table>
+            </div>
+            <div id="API_smtp_container">
+                <h3 id="API_smtp">3.5 SMTP services</h3>
+                <table>
+                    <tr> <th>Method</th> <th>Description</th></tr>
+                    <tr> <td>smtp_handler :: sendNewEmail(str:usermail, str:subject, innerHTML:emailBody, *file:*pdfForm) -> None</td>
+                         <td>Sends an email with the appropriate form whenever a new record for service type >0 is created.<br>
+                         Uses template <code>msg_body.html</code>. See setup for additionnal information.</td>
+                    </tr>
+                    <tr> <td>smtp_handler :: parseReceivedEmail(innerHTML:emailBody, *str:*subject) -> array(map(str)):data</td>
+                         <td>Parse email body as a JSON object.<br>
+                         The field subject is passed whenever request type filtering is required.</td>
+                    </tr>
+                    <tr> <td>appSheet :: sendSMS(obj:event) -> None</td>
+                        <td>Sends a text message to app users whenever a new request of type 0 is created or a new project is created.</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="API_pdf_container"> 
+                <h3 id="API_pdf">3.6. PDF encryption</h3>
+                <table>
+                    <tr> <th>Method</th> <th>Description</th> </tr>
+                    <tr> <td>aes :: encrypt(str:data, str:key) -> (str:encryptedData)</td>
+                         <td>AES-128 cryptographic function embedded in the PDF.</td> 
+                    </tr>
+                    <tr> <td>aes :: decrypt(str:encryptedData, str:key) -> map(str:decipheredData)</td>
+                         <td></td> 
+                    </tr>
+                </table>
+            </div>
+            <div id="API_test_container"> 
+                <h3 id="API_test">3.7. Integration testing</h3>
+                <table>
+                    <tr> <th>Method</th> <th>Description</th> </tr>
+                    <tr> <td>testIntegration()</td>
+                         <td>testIntegrationGenDocs(), testIntegrationEventListeners()<br>
+                         Running the test takes approximately 15min. Therefore, it is set to be fired daily at night.<br>
+                         Schedule can be changed through config.json<br>
+                         Units tests are stored in test_units.gs.<br>
+                         All tests rely on the moke dataset stored in test_data.</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="API_setup_container"> 
+                <h3 id="API_setup">3.8. Setup</h3>
+                <table>
+                    <tr> <th>Method</th> <th>Description</th> </tr>
+                    <tr> <td>setup :: installTriggers() -> bool</td>
+                         <td>Returns TRUE if the function exited successfully, FALSE if an error has occured.</td>
+                    </tr>
+                    <tr> <td>setup :: removeTriggers() -> bool</td>
+                         <td>Returns TRUE if the function exites successfully, FALSE if an error has occured.</td>
+                    </tr>
+                    <tr> <td>setup :: readConfigFile() -> map(str)</td>
+                         <td>Decode config.json. See setup for information about the the structure of the file.</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="API_pos_container"> 
+                <h3 id="API_pos">3.9. Part-of-speech tagger (Google Docs add-on)</h3>
+                <table>
+                    <tr> <th>Method</th> <th>Description</th> </tr>
+                    <tr> <td>pos_tagger :: tagStatements(obj:event, str:statement) -> (bool:eval, str:errorMsg)</td>
+                         <td>Evaluates syntax correctness of the document element at cursor position.<br>
+                         Doesn't access validity of the statement (i.e. if the variables are well-defined and initialized properly).</td>
+                    </tr>
+                    <tr> <td>pos_tagger :: cleanDoc(obj:event) -> None</td>
+                         <td>Removes font coloring.</td>
+                    </tr>
+                    <tr> <td>pos_tagger :: preview(obj:event) -> bool</td>
+                         <td>Export the document as a PDF file.<br>
+                         Returns TRUE if the function exited successfully, FALSE if an error has occured.</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h2 id="SP">4. Support</h2>
+            <address>
+                For further information, please contact: 
+                <a href="mailto:michael@satoshi.legal"> michael@satoshi.legal</a><br>
+            </address>
+        </div>
+        
+    </body>
+    
+</html>
+  
